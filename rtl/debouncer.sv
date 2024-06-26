@@ -1,3 +1,15 @@
+///////////////////////////////////////////////////////////////////////////////////
+// [Filename]       debouncer.sv
+// [Project]        debouncer_ip
+// [Author]         Ciro Bermudez
+// [Language]       SystemVerilog 2017 [IEEE Std. 1800-2017]
+// [Created]        2024.06.22
+// [Description]    Debouncer circuit
+// [Notes]          Tick output is useful to test FSMs
+//                  Level output emulates a Schmitt trigger
+// [Status]         Stable
+///////////////////////////////////////////////////////////////////////////////////
+
 module debouncer #(
   parameter ClkRate = 10_000_000,
   parameter Baud = 10_000
@@ -11,7 +23,7 @@ module debouncer #(
   
   // Internal variables
   logic ff1, ff2, ff3, ff4;
-  logic ena_cnt, clr_cnt;
+  logic ena_cnt, clear_cnt;
 
   // Run the button through two flip-flops to avoid metastability issues
   always_ff @(posedge clk_i, posedge rst_i) begin
@@ -24,7 +36,7 @@ module debouncer #(
     end
   end
 
-  assign clr_cnt = ff1 ^ ff2;
+  assign clear_cnt = ff1 ^ ff2;
 
   localparam BaudCounterMax = ClkRate/Baud;
   localparam BaudCounterSize = $clog2(BaudCounterMax);
@@ -35,7 +47,7 @@ module debouncer #(
     if (rst_i) begin
       cnt <= '0;
     end else begin
-      if (clr_cnt) begin
+      if (clear_cnt) begin
         cnt <= '0;
       end else if (~ena_cnt) begin
         cnt <= cnt + 1'b1;
