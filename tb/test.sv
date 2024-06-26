@@ -10,10 +10,10 @@ module test (debouncer_if.dvr db_if);
   end
 
   task reset();
-    db_if.rst =  1'b1;
+    db_if.rst_i =  1'b1;
     db_if.cb.sw_i <= 1'b0;
     repeat(2) @(db_if.cb);
-    db_if.cb.rst <= 1'b0;
+    db_if.cb.rst_i <= 1'b0;
     repeat(12) @(db_if.cb);
   endtask: reset
   
