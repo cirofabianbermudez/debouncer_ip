@@ -2,13 +2,15 @@
 
 module tb;
 
-  // 100 MHz signal
+  // Clock signal
+  parameter CLK_PERIOD = 10ns;
   logic clk_i = 0;
-  always #5 clk_i = ~clk_i;
+  always #(CLK_PERIOD / 2) clk_i = ~clk_i;
 
   // Interface
   debouncer_if vif (clk_i);
 
+  // Test
   test top_test (vif);
 
   // Instantiation
