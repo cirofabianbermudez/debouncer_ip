@@ -15,8 +15,8 @@ module tb;
 
   // Instantiation
   debouncer #(
-      .ClkRate(10_000_000),
-      .Baud(1_000_000)
+      .ClkRate(100_000_000),
+      .Baud(10_000_000)
   ) dut (
       .clk_i(vif.clk_i),
       .rst_i(vif.rst_i),
