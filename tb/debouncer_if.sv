@@ -8,13 +8,13 @@ interface debouncer_if (
   logic db_tick_o;
 
   clocking cb @(posedge clk_i);
-    default input #1ns output #1ns;
+    default input #1ns output #5ns;
     output rst_i;
     output sw_i;
     input db_level_o;
     input db_tick_o;
   endclocking
 
-  modport dvr(clocking cb, output rst_i);
+  modport dvr(clocking cb, output rst_i, output sw_i);
 
 endinterface : debouncer_if
