@@ -16,6 +16,8 @@
 //                  The debounce time is:
 //                    db_time = (ClkRate / Baud) * (1 / ClkRate) + (1 / ClkRate)
 //                            = 110 ns
+//                  Baud = (ClkRate) / ( (db_time*ClkRate) - 1 )
+//                       = 10_000_000
 // [Status]         Stable
 ///////////////////////////////////////////////////////////////////////////////////
 
