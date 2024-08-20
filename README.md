@@ -15,3 +15,5 @@ Using mechanical buttons is one of the most common ways to interact with electro
 [2] “Debounce Logic Circuit (VHDL) - Semiconductor / Logic Design,” Electronic Component and Engineering Solution Forum - TechForum │ DigiKey. Accessed: May 25, 2024. [Online]. Available: https://forum.digikey.com/t/debounce-logic-circuit-vhdl/12573
 
 [3] *Debounce a Switch*, (Sep. 26, 2018). Accessed: May 25, 2024. [Online Video]. Available: https://www.youtube.com/watch?v=e1-kc04jSE4
+
+[4] Ovisign Verilog HDL Tutorials, FPGA project 06 Part1 - Pushbutton counter with debounce, (Sep. 19, 2022). Accessed: Aug. 19, 2024. [Online Video]. Available: https://www.youtube.com/watch?v=9n_YWHAdcLk
