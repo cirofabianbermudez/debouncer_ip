@@ -1,5 +1,6 @@
 # Directories
 vivado/
+fmt_log/
 
 # C++
 *.o
