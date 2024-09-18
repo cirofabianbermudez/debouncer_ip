@@ -7,23 +7,23 @@
 // [Description]    Debouncer circuit
 // [Notes]          Tick output is useful to test FSMs
 //                  Level output emulates a Schmitt trigger
-//                  ClkRate: is the FPGA frequency
-//                  Baud:    is the number of bits per second
+//                  ClkFreq:    is the FPGA frequency
+//                  StableTime: is the waiting time in ms
 //                  Example:
-//                    ClkRate = 100_000_000    ->   100 MHz
-//                    Baud    =  10_000_000    ->    10 Mbps
-//                    Time    = 1 / Baud       ->   100 ns
-//                  The debounce time is:
-//                    db_time = (ClkRate / Baud) * (1 / ClkRate) + (1 / ClkRate)
-//                            = 110 ns
-//                  Baud = (ClkRate) / ( (db_time*ClkRate) - 1 )
-//                       = 10_000_000
+//                    ClkFreq    = 100_000_000    ->   100 MHz
+//                    StableTime =          10    ->    10 ms
+//                  Then:
+//                    CounterMax   = ClkFreq*StableTime/1000 = 1_000_000
+//                    CounterWidth = $clog2(CounterMax) = 20
+//                  To increase the precision it is possible to change 
+//                  from ms to us or even to ns but you must adjust the 
+//                  division factor accordingly.
 // [Status]         Stable
 ///////////////////////////////////////////////////////////////////////////////////
 
 module debouncer #(
-    parameter ClkRate = 100_000_000,
-    parameter Baud    =  10_000_000
+    parameter int ClkFreq    = 100_000_000,
+    parameter int StableTime = 10
 ) (
     input  logic clk_i,
     input  logic rst_i,
@@ -49,9 +49,9 @@ module debouncer #(
 
   assign clear_cnt = ff1 ^ ff2;
 
-  localparam BaudCounterMax = ClkRate / Baud;
-  localparam BaudCounterSize = $clog2(BaudCounterMax);
-  logic [BaudCounterSize-1:0] cnt;
+  localparam int CounterMax = ClkFreq * StableTime / 1000;
+  localparam int CounterWidth = $clog2(CounterMax);
+  logic [CounterWidth-1:0] cnt;
 
   // Counter logic
   always_ff @(posedge clk_i, posedge rst_i) begin
@@ -66,7 +66,7 @@ module debouncer #(
     end
   end
 
-  assign ena_cnt = (cnt == BaudCounterMax - 1) ? 1'b1 : 1'b0;
+  assign ena_cnt = (cnt == CounterMax - 1) ? 1'b1 : 1'b0;
 
   // Output debounce level
   always_ff @(posedge clk_i, posedge rst_i) begin

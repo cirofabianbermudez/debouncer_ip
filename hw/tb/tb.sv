@@ -3,9 +3,9 @@
 module tb;
 
   // Clock signal
-  parameter CLK_PERIOD = 10ns;
+  parameter time ClkPeriod = 10ns;
   logic clk_i = 0;
-  always #(CLK_PERIOD / 2) clk_i = ~clk_i;
+  always #(ClkPeriod / 2) clk_i = ~clk_i;
 
   // Interface
   debouncer_if vif (clk_i);
@@ -15,8 +15,8 @@ module tb;
 
   // Instantiation
   debouncer #(
-      .ClkRate(100_000_000),
-      .Baud(10_000_000)
+      .ClkFreq(100_000_000),
+      .StableTime(1)
   ) dut (
       .clk_i(vif.clk_i),
       .rst_i(vif.rst_i),

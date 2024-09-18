@@ -8,7 +8,7 @@ TB_FILES  := $(shell find $(TB_DIR) -name "*.sv" -or -name "*.v")
 
 .PHONY: all check lint format format-check help
 
-all: lint
+all: help
 
 check:
 	@echo "RTL files:"
