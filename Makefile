@@ -2,6 +2,7 @@ ROOT_DIR := $(CURDIR)
 RTL_DIR := $(ROOT_DIR)/hw/rtl
 TB_DIR := $(ROOT_DIR)/hw/tb
 FMT_DIR := $(ROOT_DIR)/fmt_log
+CUR_DATE := $(shell date +%Y-%m-%d_%H-%M-%S)
 
 RTL_FILES := $(shell find $(RTL_DIR) -name "*.sv" -or -name "*.v")
 TB_FILES  := $(shell find $(TB_DIR) -name "*.sv" -or -name "*.v")
@@ -34,8 +35,7 @@ lint:
 
 format-rtl: check
 	@echo "Running Verible formatting tool for RTL [Inplace mode]"
-	@rm -rf $(FMT_DIR)/rtl_backup
-	@cp -r $(RTL_DIR) $(FMT_DIR)/rtl_backup
+	@cp -r $(RTL_DIR) $(FMT_DIR)/rtl_backup_$(CUR_DATE)
 	@for file in $(RTL_FILES); do \
 		echo " - Formatting $$file"; \
 		verible-verilog-format --inplace $$file; \
@@ -43,9 +43,8 @@ format-rtl: check
 
 format-rtl-check: check
 	@echo "Running Verible formatting tool for RTL [Check mode]"
-	@rm -rf $(FMT_DIR)/rtl_check
-	@cp -r $(RTL_DIR) $(FMT_DIR)/rtl_check
-	@files=$$(find $(FMT_DIR)/rtl_check -name "*.sv" -or -name "*.v"); \
+	@cp -r $(RTL_DIR) $(FMT_DIR)/rtl_check_$(CUR_DATE)
+	@files=$$(find $(FMT_DIR)/rtl_check_$(CUR_DATE) -name "*.sv" -or -name "*.v"); \
 	for file in $$files; do \
 		echo " - Formatting $$file"; \
 		verible-verilog-format --inplace $$file; \
@@ -53,8 +52,7 @@ format-rtl-check: check
 
 format-tb: check
 	@echo "Running Verible formatting tool for TB [Inplace mode]"
-	@rm -rf $(FMT_DIR)/tb_backup
-	@cp -r $(TB_DIR) $(FMT_DIR)/tb_backup
+	@cp -r $(TB_DIR) $(FMT_DIR)/tb_backup_$(CUR_DATE)
 	@for file in $(TB_FILES); do \
 		echo " - Formatting $$file"; \
 		verible-verilog-format --inplace $$file; \
@@ -62,9 +60,8 @@ format-tb: check
 
 format-tb-check: check
 	@echo "Running Verible formatting tool for TB [Check mode]"
-	@rm -rf $(FMT_DIR)/tb_check
-	@cp -r $(TB_DIR) $(FMT_DIR)/tb_check
-	@files=$$(find $(FMT_DIR)/tb_check -name "*.sv" -or -name "*.v"); \
+	@cp -r $(TB_DIR) $(FMT_DIR)/tb_check_$(CUR_DATE)
+	@files=$$(find $(FMT_DIR)/tb_check_$(CUR_DATE) -name "*.sv" -or -name "*.v"); \
 	for file in $$files; do \
 		echo " - Formatting $$file"; \
 		verible-verilog-format --inplace $$file; \
