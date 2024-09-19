@@ -15,8 +15,8 @@
 //                  Then:
 //                    CounterMax   = ClkFreq*StableTime/1000 = 1_000_000
 //                    CounterWidth = $clog2(CounterMax) = 20
-//                  To increase the precision it is possible to change 
-//                  from ms to us or even to ns but you must adjust the 
+//                  To increase the precision it is possible to change
+//                  from ms to us or even to ns but you must adjust the
 //                  division factor accordingly.
 // [Status]         Stable
 ///////////////////////////////////////////////////////////////////////////////////
