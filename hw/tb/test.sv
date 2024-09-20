@@ -1,7 +1,7 @@
 module test (
     debouncer_if.dvr db_if
 );
-  
+
   int debounce_time;
 
   initial begin
@@ -35,10 +35,10 @@ module test (
     for (int i = 0; i < 1000; i++) begin
       db_if.cb.sw_i <= 1'b1;
       time1  = $realtime;
-      delay1 = $urandom_range(debounce_time/2, debounce_time);
+      delay1 = $urandom_range(debounce_time / 2, debounce_time);
       repeat (delay1) @(db_if.cb);
       db_if.cb.sw_i <= 1'b0;
-      delay2 = $urandom_range(debounce_time/2, debounce_time);
+      delay2 = $urandom_range(debounce_time / 2, debounce_time);
       time2  = $realtime;
       repeat (delay2) @(db_if.cb);
       $display("iter = %3d, delay1 = %3d, delay2 = %3d, time1 = %t, time2 = %t", i, delay1, delay2,
