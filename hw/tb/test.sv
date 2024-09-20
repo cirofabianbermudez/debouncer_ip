@@ -32,7 +32,7 @@ module test (
   task automatic bounce();
     int delay1, delay2;
     realtime time1, time2;
-    for (int i = 0; i < 50; i++) begin
+    for (int i = 0; i < 1000; i++) begin
       db_if.cb.sw_i <= 1'b1;
       time1  = $realtime;
       delay1 = $urandom_range(debounce_time/2, debounce_time);
