@@ -1,9 +1,12 @@
 module test (
     debouncer_if.dvr db_if
 );
+  
+  int debounce_time;
 
   initial begin
     $display("Begin Of Simulation.");
+    debounce_time = 120;
     reset();
     normal();
     bounce();
@@ -16,14 +19,14 @@ module test (
     db_if.sw_i  = 1'b0;
     repeat (2) @(db_if.cb);
     db_if.cb.rst_i <= 1'b0;
-    repeat (12) @(db_if.cb);
+    repeat (debounce_time) @(db_if.cb);
   endtask : reset
 
   task automatic normal();
     db_if.cb.sw_i <= 1'b1;
-    repeat (30) @(db_if.cb);
+    repeat (debounce_time) @(db_if.cb);
     db_if.cb.sw_i <= 1'b0;
-    repeat (30) @(db_if.cb);
+    repeat (debounce_time) @(db_if.cb);
   endtask : normal
 
   task automatic bounce();
@@ -32,10 +35,10 @@ module test (
     for (int i = 0; i < 50; i++) begin
       db_if.cb.sw_i <= 1'b1;
       time1  = $realtime;
-      delay1 = $urandom_range(1, 15);
+      delay1 = $urandom_range(debounce_time/2, debounce_time);
       repeat (delay1) @(db_if.cb);
       db_if.cb.sw_i <= 1'b0;
-      delay2 = $urandom_range(1, 15);
+      delay2 = $urandom_range(debounce_time/2, debounce_time);
       time2  = $realtime;
       repeat (delay2) @(db_if.cb);
       $display("iter = %3d, delay1 = %3d, delay2 = %3d, time1 = %t, time2 = %t", i, delay1, delay2,

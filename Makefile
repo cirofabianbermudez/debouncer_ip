@@ -2,15 +2,24 @@ ROOT_DIR := $(CURDIR)
 RTL_DIR := $(ROOT_DIR)/hw/rtl
 TB_DIR := $(ROOT_DIR)/hw/tb
 FMT_DIR := $(ROOT_DIR)/fmt_log
+RUN_DIR := $(ROOT_DIR)/work
 CUR_DATE := $(shell date +%Y-%m-%d_%H-%M-%S)
 
 RTL_FILES := $(shell find $(RTL_DIR) -name "*.sv" -or -name "*.v")
 TB_FILES  := $(shell find $(TB_DIR) -name "*.sv" -or -name "*.v")
 
+# Synopsys VCS/SIMV/VERDI
+VCS := vcs -full64 -sverilog \
+			-lca -debug_access+all+reverse -kdb +vcs+vcdpluson \
+			-timescale=1ns/100ps $(TB_FILES) $(RTL_FILES) -l comp_$(CUR_DATE).log
+
+SEED := 1
+
 .PHONY: all check lint format format-check help
 
 all: help
 
+# Linting and formatting
 check:
 	@echo "RTL files:"
 	@for file in $(RTL_FILES); do \
@@ -70,6 +79,23 @@ format-tb-check: check
 format: format-rtl format-tb
 
 format-check: format-rtl-check format-tb-check
+
+# Synopsys VCS/SIMV/VERDI
+compile:
+	@mkdir -p $(RUN_DIR)/sim
+	cd $(RUN_DIR)/sim && $(VCS)
+
+sim:
+	cd $(RUN_DIR)/sim && ./simv +ntb_random_seed=$(SEED) -l simv_$(CUR_DATE).log
+
+random:
+	cd $(RUN_DIR)/sim && ./simv +ntb_random_seed_automatic -l simv_$(CUR_DATE).log
+
+verdi:
+	cd $(RUN_DIR)/sim && verdi -dbdir ./simv.daidir -ssf ./novas.fsdb -nologo &
+
+clean:
+	rm -rf $(RUN_DIR)
 
 help:
 	@echo ""

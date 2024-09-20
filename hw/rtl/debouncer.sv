@@ -49,7 +49,7 @@ module debouncer #(
 
   assign clear_cnt = ff1 ^ ff2;
 
-  localparam int CounterMax = ClkFreq * StableTime / 1000;
+  localparam int CounterMax = ClkFreq * StableTime / 1_000_000;
   localparam int CounterWidth = $clog2(CounterMax);
   logic [CounterWidth-1:0] cnt;
 

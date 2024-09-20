@@ -27,6 +27,7 @@ module tb;
 
   initial begin
     $timeformat(-9, 1, "ns", 10);
+    $fsdbDumpvars;                // Synopsys VCS
   end
 
 endmodule
