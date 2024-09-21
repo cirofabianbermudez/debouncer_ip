@@ -1,6 +1,7 @@
 tasks:
   - name: install-verible
     command: |
-      echo "Hello"
+      ./scripts/install_verible.sh
+
 
 

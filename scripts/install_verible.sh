@@ -19,7 +19,7 @@ if [ `uname -p` = "x86_64" ]; then
   echo -e "[INFO]: Installing Verible"
   rm -rf $ROOT_DIR/verible
   mkdir -p $ROOT_DIR/verible
-  cd verible
+  cd $ROOT_DIR/verible
   VERIBLE_VER=v0.0-3724-gdec56671
   wget -q https://github.com/chipsalliance/verible/releases/download/${VERIBLE_VER}/verible-${VERIBLE_VER}-linux-static-x86_64.tar.gz
   tar -xzf verible*.tar.gz
