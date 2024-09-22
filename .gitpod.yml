@@ -1,7 +1,10 @@
+image:
+    file: .gitpod.dockerfile
+
 tasks:
   - name: install-verible
     command: |
-      ./scripts/install_verible.sh
+      echo "Hello Ciro"
 
 
 
