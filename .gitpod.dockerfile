@@ -24,4 +24,4 @@ ENV VERIBLE_VER=v0.0-3724-gdec56671
 RUN wget -q https://github.com/chipsalliance/verible/releases/download/${VERIBLE_VER}/verible-${VERIBLE_VER}-linux-static-x86_64.tar.gz \
     && tar -xzf verible*.tar.gz \
     && sudo cp -r verible-${VERIBLE_VER}/bin/* /usr/local/bin/ \
-    && rm -rf verible-${VERIBLE_VER}
+    && rm -rf verible-${VERIBLE_VER} verible*.tar.gz
