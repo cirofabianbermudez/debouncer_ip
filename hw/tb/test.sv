@@ -46,12 +46,13 @@ module test (
     for (int i = 0; i < 1000; i++) begin
       delay1 = $urandom_range(debounce_time / 10, debounce_time);
       delay2 = $urandom_range(debounce_time / 10, debounce_time);
-      $display("[INFO] %4t: iter = %3d, delay1 = %10d, delay2 = %10d", $realtime, i, delay1, delay2);
+      $display("[INFO] %4t: iter = %3d, delay1 = %10d, delay2 = %10d", $realtime, i, delay1,
+               delay2);
       vif.cb.sw_i <= 1'b1;
-      time1  = $realtime;
+      time1 = $realtime;
       repeat (delay1) @(vif.cb);
       vif.cb.sw_i <= 1'b0;
-      time2  = $realtime;
+      time2 = $realtime;
       repeat (delay2) @(vif.cb);
       $display("[INFO] %4t: iter = %3d, time1  = %t, time2  = %t", $realtime, i, time1, time2);
     end
@@ -65,7 +66,7 @@ module test (
       fork
         begin : wd_timer_fork
           fork : db_tick_wd_timer
-            begin 
+            begin
               wait (vif.cb.db_tick_o != 1);
               @(vif.cb iff (vif.cb.db_tick_o == 1));
               tick_counter++;
@@ -74,7 +75,8 @@ module test (
             begin
               repeat (10_000) @(vif.cb);
               $display("[INFO] %4t: Timed out!", $realtime);
-              $display("[INFO] %4t: tick_counter: %4d, tick_error_counter: %4d", $realtime, tick_counter, tick_error_counter);
+              $display("[INFO] %4t: tick_counter: %4d, tick_error_counter: %4d", $realtime,
+                       tick_counter, tick_error_counter);
               $finish;
             end
           join_any : db_tick_wd_timer
