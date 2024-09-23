@@ -42,7 +42,7 @@ lint:
 	@echo "Running Verible linting tool"
 	@verible-verilog-lint $(RTL_FILES) $(TB_FILES) || true
 
-verilator-lint:
+lint-verilator:
 	@echo "Running Verilator linting tool"
 	verilator --lint-only -Wall -sv $(RTL_FILES) || true
 
