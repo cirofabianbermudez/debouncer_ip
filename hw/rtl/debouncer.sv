@@ -66,7 +66,7 @@ module debouncer #(
     end
   end
 
-  assign ena_cnt = (cnt == CounterMax - 1) ? 1'b1 : 1'b0;
+  assign ena_cnt = (cnt == CounterMax[CounterWidth-1:0] - 1) ? 1'b1 : 1'b0;
 
   // Output debounce level
   always_ff @(posedge clk_i, posedge rst_i) begin
