@@ -15,7 +15,7 @@ VCS := vcs -full64 -sverilog \
 
 SEED := 1
 
-.PHONY: all check lint format format-check help
+.PHONY: all check lint format format-check help vivado
 
 all: help
 
@@ -96,6 +96,12 @@ verdi:
 
 clean:
 	rm -rf $(RUN_DIR)
+
+# Setup Vivado environment variables
+vivado:
+	#vivado -mode batch -source vivado/sim_script.tcl
+	vivado -mode batch -source scripts/sim_script.tcl
+
 
 help:
 	@echo ""
