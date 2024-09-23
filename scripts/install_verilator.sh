@@ -20,8 +20,9 @@ if [ `uname -p` = "x86_64" ]; then
   rm -rf $ROOT_DIR/verilator
   mkdir -p $ROOT_DIR/verilator
   cd $ROOT_DIR/verilator
-  git clone http://git.veripool.org/git/verilator
-  cd $ROOT_DIR/verilator
+  git clone https://github.com/verilator/verilator.git
+  unset VERILATOR_ROOT
+  cd verilator
   git pull
   git checkout v4.218
   autoconf

@@ -106,7 +106,6 @@ vivado:
 	#vivado -mode batch -source vivado/sim_script.tcl
 	vivado -mode batch -source scripts/sim_script.tcl
 
-
 help:
 	@echo ""
 	@echo "=================================================================="
