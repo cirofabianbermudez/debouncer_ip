@@ -42,6 +42,10 @@ lint:
 	@echo "Running Verible linting tool"
 	@verible-verilog-lint $(RTL_FILES) $(TB_FILES) || true
 
+verilator_lint:
+	@echo "Running Verilator linting tool"
+	verilator --lint-only -Wall -sv $(RTL_FILES) $(TB_FILES)
+
 format-rtl: check
 	@echo "Running Verible formatting tool for RTL [Inplace mode]"
 	@cp -r $(RTL_DIR) $(FMT_DIR)/rtl_backup_$(CUR_DATE)
