@@ -8,3 +8,8 @@ work/
 *.lib
 *.exe
 *.out
+
+# Vivado
+*.jou
+*.log
+*.str
