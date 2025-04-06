@@ -10,6 +10,11 @@ work/
 *.out
 
 # Vivado
+.Xil/
 *.jou
 *.log
 *.str
+
+# Python
+.venv/
+venv/

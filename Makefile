@@ -102,9 +102,15 @@ clean:
 	rm -rf $(RUN_DIR)
 
 # Setup Vivado environment variables
-vivado:
+vivado-run:
 	#vivado -mode batch -source vivado/sim_script.tcl
 	vivado -mode batch -source scripts/sim_script.tcl
+
+vivado-create:
+	vivado -mode batch -source scripts/vivado.tcl
+
+vivado-clean:
+	rm -rf *.log *.jou .Xil/ vivado/
 
 help:
 	@echo ""
