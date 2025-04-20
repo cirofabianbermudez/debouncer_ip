@@ -18,7 +18,7 @@ proc compile {} {
 
   # Files
   set vlogSources {}
-  set vhdlSources {}
+  set vouhdlSrces {}
   set ipsSources  {}
 
   # Defines
@@ -111,41 +111,75 @@ proc compile {} {
 
   }
 
+  # =========================== COMPILE HDL SOURCES ============================ #
 
+  # Logs
+  set logDir [pwd]/../logs
 
+  if { ![file exists ${logDir} ] } {
+    file mkdir ${logDir}
+  }
 
+  set logFile ${logDir}/compile.log
+
+  if { [file exists ${logFile} ] } {
+    file delete ${logFile}
+  }
+  
   # Compile Verilog/SystemVerilog sources (xvlog)
+  if { [llength ${vlogSources}] != 0 } {
+    
+    foreach src ${vlogSources} {
+      
+      if { [file exist ${src}] } {
 
+        if { [file extension ${src}]  == ".sv"} {
+          puts "\[INFO\]: Compiling SystemVerilog source file ${src}"
 
+          # Launch xvlog executable from Tcl
+          catch {eval exec xvlog -sv ${vlogDefines} -relax -i [file normalize [pwd]/../..] -work work ${src} -nolog | tee -a ${logFile}}
 
+        } else {
+          puts "\[INFO\]: Compiling Verilog source file ${src}"
+
+          # Launch xvlog executable from Tcl
+          catch {eval exec xvlog  ${vlogDefines} -relax -i [file normalize [pwd]/../..] -work work ${src} -nolog | tee -a ${logFile}}
+        }
+
+      } else {
+
+        puts "\[ERROR\]: ${src} not found!"
+        
+        # Script failure
+        exit 1
+      }
+    }
+  }
 
   # ============================= CPU REPORT TIME ============================== #
 
   set tclStop [clock seconds]
   set seconds [expr ${tclStop} - ${tclStart} ]
-  puts "\[INFO\]: Total elapsed-time for compilation: [format "%6.2f" [expr $seconds/60.0]] minutes"
+  puts "\[INFO\]: Total elapsed-time for compilation: [format "%6.2f" [expr $seconds/1.0]] seconds"
 
   # ========================= CHECK FOR SYNTAX ERRORS ========================== #
 
   puts "\[INFO\]: Checking for syntax errors ..."
-  if {1} {
+  if { [catch {exec grep --color ERROR ${logFile} >@stdout 2>@stdout } ] } {
     puts "\[INFO\]: No Syntax Errors Found!"
-    return 0;
+    return 0
   } else {
     puts "\[ERROR\]: Compilation Errors Detected!"
     puts "\[INFO\]: Please, fix all syntax errors and recompile sources\n"
     return 1
   }
 
-  return 0
 }
-
 
 # =================================== MAIN =================================== #
 
 # Run the Tcl procedure when the script is executed by tclsh from Makefile
 if { ${argc} == 1 } {
-
 
   if { [lindex ${argv} 0] eq "compile" } {
 
@@ -175,6 +209,14 @@ if { ${argc} == 1 } {
     exit 1
 
   }
+
+} else {
+
+    # Invalid script argument, exit with non-zero error code
+    puts "\[ERROR\]: No argument provided"
+
+    # Script failure
+    exit 1
 
 }
 
