@@ -5,15 +5,16 @@
 ## [Language]       GNU Makefile
 ## [Created]        Nov 2024
 ## [Modified]       -
-## [Description]    Custom Tcl script to run simulation 
+## [Description]    Custom Tcl script to run simulation
 ## [Notes]          -
 ## [Status]         stable
 ## [Revisions]      -
 ##=============================================================================
 
-# Variable to measure time
+# Profiling
 set tclStart [clock seconds]
 
+# Scripts directory
 set scriptsDir [pwd]/../../scripts
 
 # Load into XSim Tcl environment the custom 'relaunch' procedure

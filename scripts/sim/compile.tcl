@@ -15,7 +15,7 @@
 
 proc compile {} {
 
-  # Variable to measure time
+  # Profiling
   set tclStart [clock seconds]
 
   # Files
@@ -23,7 +23,7 @@ proc compile {} {
   set vhdlSources {}
   set ipsSources  {}
 
-  # Defines
+  # Defines for Verilog compilation
   set vlogDefines {}
 
   # ============================== PARSING FILES =============================== #
@@ -51,7 +51,7 @@ proc compile {} {
     }
 
   } else {
-    
+
     # Parse VLOG_SOURCES, VHDL_SOURCES and IPS_SOURCES environment variables otherwise
 
     # VLOG_SOURCES
@@ -98,13 +98,13 @@ proc compile {} {
 
   if { [info exists ::env(WORK_DIR)] } {
 
-    puts "\[INFO\]: WORK_DIR environment variable detected: ${::env(WORK_DIR)}" 
+    puts "\[INFO\]: WORK_DIR environment variable detected: ${::env(WORK_DIR)}"
     cd ${::env(WORK_DIR)}/sim
 
   } else {
 
     puts "\[WARN\]: WORK_DIR environment variable not defined!"
-    puts "\[INFO\]: Assuming ./work/sim to run simulation flow" 
+    puts "\[INFO\]: Assuming ./work/sim to run simulation flow"
 
     if { ![file exists work] } {
       file mkdir work/sim
@@ -135,9 +135,9 @@ proc compile {} {
 
   # Compile Verilog/SystemVerilog sources (xvlog)
   if { [llength ${vlogSources}] != 0 } {
-    
+
     foreach src ${vlogSources} {
-      
+
       if { [file exist ${src}] } {
 
         if { [file extension ${src}]  == ".sv"} {
@@ -156,7 +156,7 @@ proc compile {} {
       } else {
 
         puts "\[ERROR\]: ${src} not found!"
-        
+
         # Script failure
         exit 1
       }
@@ -165,9 +165,9 @@ proc compile {} {
 
   # Compile VHDL sources (xvhdl)
   if { [llength ${vhdlSources}] != 0 } {
-    
+
     foreach src ${vhdlSources} {
-      
+
       if { [file exist ${src}] } {
 
         puts "\[INFO\]: Compiling VHDL source file ${src}"
@@ -178,7 +178,7 @@ proc compile {} {
       } else {
 
         puts "\[ERROR\]: ${src} not found!"
-        
+
         # Script failure
         exit 1
       }
@@ -187,9 +187,9 @@ proc compile {} {
 
   # Compile IP sources (assume to use Verilog netlists) (xvlog)
   if { [llength ${ipsSources}] != 0 } {
-    
+
     foreach src ${ipsSources} {
-      
+
       if { [file exist ${src}] } {
 
         puts "\[INFO\]: Compiling IP Verilog netlist file ${src}"
@@ -200,7 +200,7 @@ proc compile {} {
       } else {
 
         puts "\[ERROR\]: ${src} not found!"
-        
+
         # Script failure
         exit 1
       }
@@ -217,17 +217,21 @@ proc compile {} {
 
   puts "\[INFO\]: Checking for syntax errors ..."
   if { [catch {exec grep --color ERROR ${logFile} >@stdout 2>@stdout } ] } {
+
     puts "\[INFO\]:"
     puts "        ============================="
     puts "           No Syntax Errors Found!"
     puts "        ============================="
+
     return 0
   } else {
+
     puts "\[ERROR\]: "
     puts "        ============================="
     puts "         Compilation Errors Detected!"
     puts "        ============================="
     puts "\[ERROR\]: Please, fix all syntax errors and recompile sources"
+
     return 1
   }
 }

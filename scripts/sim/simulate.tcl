@@ -15,16 +15,16 @@
 
 proc simulate { {mode "batch"} } {
 
-  # Variable to measure time
+  # Profiling
   set tclStart [clock seconds]
 
   # ============================== PARSING FILES =============================== #
-  
+
   if { [info exist ::env(SIM_TOP_MODULE) ] } {
 
     set xelabTop ${::env(SIM_TOP_MODULE)}
 
-    puts "\[INFO\]: Top-level testbench module: ${xelabTop}" 
+    puts "\[INFO\]: Top-level testbench module: ${xelabTop}"
 
   } else {
 
@@ -34,18 +34,18 @@ proc simulate { {mode "batch"} } {
     exit 1
 
   }
-  
+
   # ============================ SETUP WORKING AREA ============================ #
 
   if { [info exists ::env(WORK_DIR)] } {
 
-    puts "\[INFO\]: WORK_DIR environment variable detected: ${::env(WORK_DIR)}" 
+    puts "\[INFO\]: WORK_DIR environment variable detected: ${::env(WORK_DIR)}"
     cd ${::env(WORK_DIR)}/sim
 
   } else {
 
     puts "\[WARN\]: WORK_DIR environment variable not defined!"
-    puts "\[INFO\]: Assuming ./work/sim to run simulation flow" 
+    puts "\[INFO\]: Assuming ./work/sim to run simulation flow"
 
     if { ![file exists work] } {
       file mkdir work/sim
@@ -54,8 +54,8 @@ proc simulate { {mode "batch"} } {
     cd work/sim
 
   }
-  
-  # Create VCD and WBD directories
+
+  # Create VCD and WDB directories
   file mkdir vcd
   file mkdir wdb
 
@@ -77,10 +77,10 @@ proc simulate { {mode "batch"} } {
 
   puts "\[INFO\]:"
   puts "        ====== Simulating the design ======"
-  
+
   if { ${mode} == "gui" } {
     puts "\[INFO\]: Running simulation in GUI mode"
-    
+
     exec xsim ${xelabTop} \
     -gui \
     -wdb [pwd]/wdb/${xelabTop}.wdb \
@@ -131,9 +131,9 @@ if { ${argc} > 0 } {
   if { [lindex ${argv} 0] eq "simulate" } {
 
     puts "\[INFO\]: running [file normalize [info script]]"
-    
+
     if { [llength ${argv}] == 2 } {
-      
+
       # Run selecting the simulation mode
       set mode [lindex ${argv} 1];
       simulate ${mode}
@@ -164,4 +164,3 @@ if { ${argc} > 0 } {
     exit 1
 
 }
-

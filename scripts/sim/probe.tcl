@@ -5,7 +5,7 @@
 ## [Language]       GNU Makefile
 ## [Created]        Nov 2024
 ## [Modified]       -
-## [Description]    Custom Tcl script to run simulation 
+## [Description]    Custom Tcl script to PROBE simulation
 ## [Notes]          -
 ## [Status]         stable
 ## [Revisions]      -

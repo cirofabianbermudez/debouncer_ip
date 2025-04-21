@@ -15,16 +15,16 @@
 
 proc elaborate {} {
 
-  # Variable to measure time
+  # Profiling
   set tclStart [clock seconds]
 
   # ============================== PARSING FILES =============================== #
-  
+
   if { [info exist ::env(SIM_TOP_MODULE) ] } {
 
     set xelabTop ${::env(SIM_TOP_MODULE)}
 
-    puts "\[INFO\]: Top-level testbench module: ${xelabTop}" 
+    puts "\[INFO\]: Top-level testbench module: ${xelabTop}"
 
   } else {
 
@@ -34,18 +34,18 @@ proc elaborate {} {
     exit 1
 
   }
-  
+
   # ============================ SETUP WORKING AREA ============================ #
 
   if { [info exists ::env(WORK_DIR)] } {
 
-    puts "\[INFO\]: WORK_DIR environment variable detected: ${::env(WORK_DIR)}" 
+    puts "\[INFO\]: WORK_DIR environment variable detected: ${::env(WORK_DIR)}"
     cd ${::env(WORK_DIR)}/sim
 
   } else {
 
     puts "\[WARN\]: WORK_DIR environment variable not defined!"
-    puts "\[INFO\]: Assuming ./work/sim to run simulation flow" 
+    puts "\[INFO\]: Assuming ./work/sim to run simulation flow"
 
     if { ![file exists work] } {
       file mkdir work/sim
@@ -80,8 +80,8 @@ proc elaborate {} {
   -debug typical work.${xelabTop} -snapshot ${xelabTop} \
   -nolog >@stdout 2>@stdout | tee ${logFile} }
 
-  # xelab --incr --debug typical --relax --mt 8 
-  # -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip 
+  # xelab --incr --debug typical --relax --mt 8
+  # -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip
   # --snapshot tb_behav xil_defaultlib.tb xil_defaultlib.glbl -log elaborate.log
 
   # ============================= CPU REPORT TIME ============================== #
