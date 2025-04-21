@@ -49,6 +49,9 @@ SIM_TOP_MODULE := tb
 
 # ================================  CONTROL  ==================================
 
+# Simulation mode
+MODE ?= batch
+
 # Export Working directory
 export WORK_DIR
 
@@ -126,6 +129,18 @@ compile: ## Parse and compile RTL and simulation sources
 	@echo -e "$(C_ORA)Compiling project$(NC)"
 	@mkdir -p $(RUN_DIR) $(LOGS_DIR)
 	@tclsh $(TCL_DIR)/sim/compile.tcl $@ || true
+#______________________________________________________________________________
+
+.PHONY: elaborate
+elaborate: ## Elaborate the design
+	@echo -e "$(C_ORA)Elaborating the design$(NC)"
+	@tclsh $(TCL_DIR)/sim/elaborate.tcl $@ || true
+#______________________________________________________________________________
+
+.PHONY: simulate
+simulate: ## Simulate the design
+	@echo -e "$(C_ORA)Simulating the design$(NC)"
+	@tclsh $(TCL_DIR)/sim/simulate.tcl $@ $(MODE) || true
 #______________________________________________________________________________
 
 .PHONY: clean

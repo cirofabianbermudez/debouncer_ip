@@ -11,6 +11,8 @@
 ## [Revisions]      -
 ##=============================================================================
 
+# ============================ COMPILE PROCEDURE ============================= #
+
 proc compile {} {
 
   # Variable to measure time
@@ -128,7 +130,8 @@ proc compile {} {
 
   # ==================== COMPILE HDL SOURCES (xvlog/xvhdl) ===================== #
 
-  puts "\[INFO\]: ====== Compiling source files ======"
+  puts "\[INFO\]:"
+  puts "        ====== Compiling source files ======"
 
   # Compile Verilog/SystemVerilog sources (xvlog)
   if { [llength ${vlogSources}] != 0 } {
@@ -214,11 +217,17 @@ proc compile {} {
 
   puts "\[INFO\]: Checking for syntax errors ..."
   if { [catch {exec grep --color ERROR ${logFile} >@stdout 2>@stdout } ] } {
-    puts "\[INFO\]: No Syntax Errors Found!"
+    puts "\[INFO\]:"
+    puts "        ============================="
+    puts "           No Syntax Errors Found!"
+    puts "        ============================="
     return 0
   } else {
-    puts "\[ERROR\]: Compilation Errors Detected!"
-    puts "\[INFO\]: Please, fix all syntax errors and recompile sources\n"
+    puts "\[ERROR\]: "
+    puts "        ============================="
+    puts "         Compilation Errors Detected!"
+    puts "        ============================="
+    puts "\[ERROR\]: Please, fix all syntax errors and recompile sources"
     return 1
   }
 }
@@ -257,13 +266,4 @@ if { ${argc} == 1 } {
 
   }
 
-} else {
-
-    # Invalid script argument, exit with non-zero error code
-    puts "\[ERROR\]: No argument provided"
-
-    # Script failure
-    exit 1
-
 }
-

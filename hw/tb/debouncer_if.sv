@@ -1,3 +1,5 @@
+`timescale 1ns / 100ps
+
 interface debouncer_if (
     input logic clk_i
 );

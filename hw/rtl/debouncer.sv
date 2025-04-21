@@ -21,6 +21,8 @@
 // [Status]         Stable
 ///////////////////////////////////////////////////////////////////////////////////
 
+`timescale 1ns / 100ps
+
 module debouncer #(
     parameter int ClkFreq    = 100_000_000,
     parameter int StableTime = 10
