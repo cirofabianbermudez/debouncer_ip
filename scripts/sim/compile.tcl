@@ -1,11 +1,11 @@
 ##=============================================================================
-## [Filename]       -
+## [Filename]       compile.tcl
 ## [Project]        -
 ## [Author]         Ciro Bermudez - cirofabian.bermudez@gmail.com
 ## [Language]       GNU Makefile
 ## [Created]        Nov 2024
 ## [Modified]       -
-## [Description]    -
+## [Description]    Custom Tcl script for COMPILE step using Vivado tools
 ## [Notes]          -
 ## [Status]         stable
 ## [Revisions]      -
@@ -18,7 +18,7 @@ proc compile {} {
 
   # Files
   set vlogSources {}
-  set vouhdlSrces {}
+  set vhdlSources {}
   set ipsSources  {}
 
   # Defines
@@ -96,6 +96,7 @@ proc compile {} {
 
   if { [info exists ::env(WORK_DIR)] } {
 
+    puts "\[INFO\]: WORK_DIR environment variable detected: ${::env(WORK_DIR)}" 
     cd ${::env(WORK_DIR)}/sim
 
   } else {
@@ -111,9 +112,8 @@ proc compile {} {
 
   }
 
-  # =========================== COMPILE HDL SOURCES ============================ #
+  # ============================== CONFIGURE LOGS ============================== #
 
-  # Logs
   set logDir [pwd]/../logs
 
   if { ![file exists ${logDir} ] } {
@@ -125,7 +125,11 @@ proc compile {} {
   if { [file exists ${logFile} ] } {
     file delete ${logFile}
   }
-  
+
+  # ==================== COMPILE HDL SOURCES (xvlog/xvhdl) ===================== #
+
+  puts "\[INFO\]: ====== Compiling source files ======"
+
   # Compile Verilog/SystemVerilog sources (xvlog)
   if { [llength ${vlogSources}] != 0 } {
     
@@ -136,15 +140,59 @@ proc compile {} {
         if { [file extension ${src}]  == ".sv"} {
           puts "\[INFO\]: Compiling SystemVerilog source file ${src}"
 
-          # Launch xvlog executable from Tcl
+          # Launch xvlog executable from Tcl for SystemVerilog
           catch {eval exec xvlog -sv ${vlogDefines} -relax -i [file normalize [pwd]/../..] -work work ${src} -nolog | tee -a ${logFile}}
 
         } else {
           puts "\[INFO\]: Compiling Verilog source file ${src}"
 
-          # Launch xvlog executable from Tcl
-          catch {eval exec xvlog  ${vlogDefines} -relax -i [file normalize [pwd]/../..] -work work ${src} -nolog | tee -a ${logFile}}
+          # Launch xvlog executable from Tcl for Verilog
+          catch {eval exec xvlog ${vlogDefines} -relax -i [file normalize [pwd]/../..] -work work ${src} -nolog | tee -a ${logFile}}
         }
+
+      } else {
+
+        puts "\[ERROR\]: ${src} not found!"
+        
+        # Script failure
+        exit 1
+      }
+    }
+  }
+
+  # Compile VHDL sources (xvhdl)
+  if { [llength ${vhdlSources}] != 0 } {
+    
+    foreach src ${vhdlSources} {
+      
+      if { [file exist ${src}] } {
+
+        puts "\[INFO\]: Compiling VHDL source file ${src}"
+
+        # Launch xvhdl executable from Tcl
+        catch {eval exec xvhdl -2008 -relax -work work ${src} -nolog | tee -a ${logFile}}
+
+      } else {
+
+        puts "\[ERROR\]: ${src} not found!"
+        
+        # Script failure
+        exit 1
+      }
+    }
+  }
+
+  # Compile IP sources (assume to use Verilog netlists) (xvlog)
+  if { [llength ${ipsSources}] != 0 } {
+    
+    foreach src ${ipsSources} {
+      
+      if { [file exist ${src}] } {
+
+        puts "\[INFO\]: Compiling IP Verilog netlist file ${src}"
+
+        # Launch xvlog executable from Tcl
+        catch {eval exec xvlog -relax -work work ${src} -nolog | tee -a ${logFile}}
 
       } else {
 
@@ -160,7 +208,7 @@ proc compile {} {
 
   set tclStop [clock seconds]
   set seconds [expr ${tclStop} - ${tclStart} ]
-  puts "\[INFO\]: Total elapsed-time for compilation: [format "%6.2f" [expr $seconds/1.0]] seconds"
+  puts "\[INFO\]: Total elapsed-time for COMPILATION: [format "%6.2f" [expr $seconds/1.0]] seconds"
 
   # ========================= CHECK FOR SYNTAX ERRORS ========================== #
 
@@ -173,7 +221,6 @@ proc compile {} {
     puts "\[INFO\]: Please, fix all syntax errors and recompile sources\n"
     return 1
   }
-
 }
 
 # =================================== MAIN =================================== #
@@ -183,7 +230,7 @@ if { ${argc} == 1 } {
 
   if { [lindex ${argv} 0] eq "compile" } {
 
-    puts "\n\[INFO\]: [file normalize [info script]]"
+    puts "\[INFO\]: running [file normalize [info script]]"
 
     if { [compile] } {
 

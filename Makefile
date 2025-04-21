@@ -43,7 +43,18 @@ SIM_VHDL_SOURCES :=
 VLOG_SOURCES := $(RTL_VLOG_SOURCES) $(SIM_VLOG_SOURCES)
 VHDL_SOURCES := $(RTL_VHDL_SOURCES) $(SIM_VHDL_SOURCES)
 
+# Simulation Variables
+RTL_TOP_MODULE := debouncer
+SIM_TOP_MODULE := tb
+
 # ================================  CONTROL  ==================================
+
+# Export Working directory
+export WORK_DIR
+
+# Export simulation variables
+export RTL_TOP_MODULE
+export SIM_TOP_MODULE
 
 # Export single file
 ifneq ($(HDL_FILE),)
