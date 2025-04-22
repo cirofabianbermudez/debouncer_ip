@@ -29,3 +29,18 @@ add_wave [current_scope]/dut/*_i -into [lindex [get_wave_config] 1]
 add_wave [current_scope]/dut/ff* -into [lindex [get_wave_config] 1]
 add_wave [current_scope]/dut/*_cnt -into [lindex [get_wave_config] 1]
 add_wave [current_scope]/dut/cnt -into [lindex [get_wave_config] 1]
+
+# ============== VCD SETUP (USEFUL FOR BATCH-MODE SIMULATIONS) =============== #
+
+set vcdDir [pwd]/vcd
+
+if { ![file exists ${vcdDir}] } {
+
+   file mkdir ${vcdDir}
+}
+
+## open VCD file
+#open_vcd ${vcdDir}/waveforms.vcd
+#
+## use 'log_vcd' to select signals to trace
+#log_vcd /
