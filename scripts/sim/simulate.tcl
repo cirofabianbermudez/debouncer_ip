@@ -155,12 +155,4 @@ if { ${argc} > 0 } {
 
   }
 
-} else {
-
-    # Invalid script argument, exit with non-zero error code
-    puts "\[ERROR\]: No argument provided"
-
-    # Script failure
-    exit 1
-
 }

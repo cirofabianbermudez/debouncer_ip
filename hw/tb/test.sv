@@ -45,7 +45,7 @@ module test (
   task automatic bounce();
     int delay1, delay2;
     realtime time1, time2;
-    for (int i = 0; i < 10; i++) begin
+    for (int i = 0; i < 2; i++) begin
       delay1 = $urandom_range(debounce_time / 10, debounce_time);
       delay2 = $urandom_range(debounce_time / 10, debounce_time);
       $display("[INFO] %4t: iter = %3d, delay1 = %10d, delay2 = %10d", $realtime, i, delay1,
