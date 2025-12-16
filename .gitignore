@@ -1,0 +1,21 @@
+# Directories
+vivado/
+vivado_project/
+fmt_log/
+work/
+
+# C++
+*.o
+*.lib
+*.exe
+*.out
+
+# Vivado
+.Xil/
+*.jou
+*.log
+*.str
+
+# Python
+.venv/
+venv/
